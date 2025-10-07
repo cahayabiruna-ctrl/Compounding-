@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi Compounding Profesional</title>
+    <style>
+        /* Mengimpor Font dari Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        /* Variabel CSS untuk kemudahan kustomisasi warna */
+        :root {
+            --bg-color: #f8f9fa;
+            --container-bg: #ffffff;
+            --primary-text: #212529;
+            --secondary-text: #495057;
+            --primary-blue: #0052cc;
+            --primary-blue-hover: #0041a3;
+            --border-color: #dee2e6;
+            --table-header-bg: #f1f3f5;
+            --table-row-hover: #e9ecef;
+            --shadow-color: rgba(0, 82, 204, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 2rem;
+            color: var(--primary-text);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: var(--container-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 25px var(--shadow-color);
+            border: 1px solid var(--border-color);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-blue);
+            margin-bottom: 2rem;
+            font-weight: 700;
+        }
+
+        /* Tata letak grid untuk form input */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: block;
+            color: var(--secondary-text);
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-sizing: border-box; /* Memastikan padding tidak menambah lebar */
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.2);
+        }
+        
+        /* Grup Checkbox */
+        .checkbox-container {
+            grid-column: 1 / -1; /* Membuat grup checkbox memenuhi lebar grid */
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            color: var(--primary-text);
+        }
+
+        /* Custom Checkbox Styling */
+        input[type="checkbox"] {
+            appearance: none;
+            width: 1.25em;
+            height: 1.25em;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            display: grid;
+            place-content: center;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        input[type="checkbox"]::before {
+            content: '';
+            width: 0.65em;
+            height: 0.65em;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em var(--primary-blue);
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+        input[type="checkbox"]:checked {
+            background-color: var(--primary-blue);
+            border-color: var(--primary-blue);
+        }
+        input[type="checkbox"]:checked::before {
+            transform: scale(1.2);
+            box-shadow: inset 1em 1em white;
+        }
+
+        button {
+            padding: 0.8rem 1.75rem;
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.2s, transform 0.2s;
+            display: block; /* Agar bisa di-margin auto */
+            margin: 2rem auto 0; /* Memberi jarak atas dan menengahkan tombol */
+        }
+
+        button:hover {
+            background-color: var(--primary-blue-hover);
+            transform: translateY(-2px);
+        }
+        
+        /* Kontainer Tabel untuk Scrolling */
+        .table-container {
+            overflow-x: auto;
+            max-height: 550px;
+            margin-top: 2rem;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-variant-numeric: tabular-nums; /* Membuat angka sejajar */
+        }
+
+        th, td {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        th {
+            background-color: var(--table-header-bg);
+            color: var(--primary-text);
+            font-weight: 600;
+            text-align: right;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        
+        /* Mengatur lebar & perataan kolom secara spesifik */
+        th:first-child, td:first-child { text-align: center; width: 5%; }
+        th:nth-child(2), td:nth-child(2) { width: 17%; }
+        th:nth-child(3), td:nth-child(3) { width: 12%; }
+        th:nth-child(4), td:nth-child(4) { width: 12%; }
+        th:nth-child(5), td:nth-child(5) { width: 12%; }
+        th:nth-child(6), td:nth-child(6) { width: 12%; }
+        th:nth-child(7), td:nth-child(7) { width: 17%; }
+        th:last-child, td:last-child { width: auto; } /* Kolom terakhir mengisi sisa */
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background-color: var(--table-row-hover);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Simulasi Compounding Profesional</h1>
+
+        <div class="form-grid">
+            <div>
+                <label for="modal">Modal Awal (USDT):</label>
+                <input type="number" id="modal" value="1157.8" step="0.01">
+            </div>
+            <div>
+                <label for="targetHari">Target Hari:</label>
+                <input type="number" id="targetHari" value="33" min="1">
+            </div>
+            <div>
+                <label for="bep">Target Profit per Transaksi (%):</label>
+                <input type="number" id="bep" value="0.85" step="0.01">
+            </div>
+            <div class="checkbox-container">
+                <label>Transaksi yang Aktif:</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="siang" checked> Siang</label>
+                    <label><input type="checkbox" id="sore" checked> Sore</label>
+                    <label><input type="checkbox" id="petang"> Petang</label>
+                    <label><input type="checkbox" id="malam" checked> Malam</label>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="hitungCompounding()">Hitung Simulasi</button>
+
+        <div class="table-container">
+            <table id="hasilTabel">
+                <thead>
+                    <tr>
+                        <th>Hari</th>
+                        <th>Modal Awal</th>
+                        <th>Profit Siang</th>
+                        <th>Profit Sore</th>
+                        <th>Profit Petang</th>
+                        <th>Profit Malam</th>
+                        <th>Modal Akhir</th>
+                        <th>Total Profit</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function hitungCompounding() {
+            const modalAwal = parseFloat(document.getElementById('modal').value);
+            const targetHari = parseInt(document.getElementById('targetHari').value);
+            const bep = parseFloat(document.getElementById('bep').value) / 100;
+
+            const aktif = {
+                siang: document.getElementById('siang').checked,
+                sore: document.getElementById('sore').checked,
+                petang: document.getElementById('petang').checked,
+                malam: document.getElementById('malam').checked
+            };
+
+            const tbody = document.querySelector('#hasilTabel tbody');
+            tbody.innerHTML = ''; // Membersihkan tabel sebelum perhitungan baru
+
+            let saldo = modalAwal;
+            let totalProfit = 0;
+
+            // Format angka ke format mata uang (USDT)
+            const formatter = new Intl.NumberFormat('en-US', {
+                style: 'decimal',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            for (let hari = 1; hari <= targetHari; hari++) {
+                let modalAwalHari = saldo;
+                let profitSiang = 0, profitSore = 0, profitPetang = 0, profitMalam = 0;
+
+                if (aktif.siang) { profitSiang = saldo * bep; saldo += profitSiang; }
+                if (aktif.sore) { profitSore = saldo * bep; saldo += profitSore; }
+                if (aktif.petang) { profitPetang = saldo * bep; saldo += profitPetang; }
+                if (aktif.malam) { profitMalam = saldo * bep; saldo += profitMalam; }
+
+                let modalAkhir = saldo;
+                let keuntunganHarian = modalAkhir - modalAwalHari;
+                totalProfit += keuntunganHarian;
+
+                const row = `<tr>
+                    <td>${hari}</td>
+                    <td>${formatter.format(modalAwalHari)}</td>
+                    <td>${formatter.format(profitSiang)}</td>
+                    <td>${formatter.format(profitSore)}</td>
+                    <td>${formatter.format(profitPetang)}</td>
+                    <td>${formatter.format(profitMalam)}</td>
+                    <td>${formatter.format(modalAkhir)}</td>
+                    <td>${formatter.format(totalProfit)}</td>
+                </tr>`;
+
+                tbody.insertAdjacentHTML('beforeend', row);
+            }
+        }
+        
+        // Menjalankan perhitungan saat halaman pertama kali dimuat
+        document.addEventListener('DOMContentLoaded', hitungCompounding);
+    </script>
+</body>
+</html>
