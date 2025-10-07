@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi Compounding DVTeam</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e0e7ff, #f8fafc);
+            margin: 0;
+            padding: 20px;
+            color: #1e293b;
+        }
+        h1 {
+            text-align: center;
+            color: #1e3a8a;
+            margin-bottom: 25px;
+        }
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        label {font-weight: 600; margin-top: 10px; display: block;}
+        input[type="number"] {
+            width: 100%; padding: 8px; margin-top: 5px;
+            border-radius: 8px; border: 1px solid #cbd5e1;
+            font-family: 'Poppins', sans-serif;
+        }
+        .checkbox-group {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .checkbox-group label {
+            display: flex; align-items: center; gap: 6px;
+            font-weight: 500;
+        }
+        button {
+            margin-top: 20px; padding: 12px 25px;
+            background: #2563eb; color: white;
+            border: none; border-radius: 10px;
+            cursor: pointer; font-size: 15px; font-weight: 600;
+            transition: background 0.3s ease;
+        }
+        button:hover {background: #1d4ed8;}
+        .table-container {
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: 500px;
+            margin-top: 25px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: right;
+            border-bottom: 1px solid #e2e8f0;
+            white-space: nowrap;
+        }
+        th {
+            background: #1e3a8a;
+            color: #f8fafc;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+        tr:hover {background: #f1f5f9;}
+        td:first-child, th:first-child {text-align: center;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Simulasi Compounding DVTeam</h1>
+
+        <label for="modal">Modal Awal (USDT):</label>
+        <input type="number" id="modal" value="1157.8" step="0.01">
+
+        <label for="targetHari">Target Hari:</label>
+        <input type="number" id="targetHari" value="33" min="1">
+
+        <label for="bep">Target BEP per Transaksi (%):</label>
+        <input type="number" id="bep" value="0.85" step="0.01">
+
+        <label>Transaksi yang Aktif:</label>
+        <div class="checkbox-group">
+            <label><input type="checkbox" id="siang" checked> Siang</label>
+            <label><input type="checkbox" id="sore" checked> Sore</label>
+            <label><input type="checkbox" id="petang"> Petang</label>
+            <label><input type="checkbox" id="malam" checked> Malam</label>
+        </div>
+
+        <button onclick="hitungCompounding()">Hitung Simulasi</button>
+
+        <div class="table-container">
+            <table id="hasilTabel">
+                <thead>
+                    <tr>
+                        <th>Hari</th>
+                        <th>Modal Awal (USDT)</th>
+                        <th>Profit Siang</th>
+                        <th>Profit Sore</th>
+                        <th>Profit Petang</th>
+                        <th>Profit Malam</th>
+                        <th>Modal Akhir (USDT)</th>
+                        <th>Total Profit Kumulatif</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function hitungCompounding() {
+            const modalAwal = parseFloat(document.getElementById('modal').value);
+            const targetHari = parseInt(document.getElementById('targetHari').value);
+            const bep = parseFloat(document.getElementById('bep').value) / 100;
+
+            const aktif = {
+                siang: document.getElementById('siang').checked,
+                sore: document.getElementById('sore').checked,
+                petang: document.getElementById('petang').checked,
+                malam: document.getElementById('malam').checked
+            };
+
+            const tbody = document.querySelector('#hasilTabel tbody');
+            tbody.innerHTML = '';
+
+            let saldo = modalAwal;
+            let totalProfit = 0;
+
+            for (let hari = 1; hari <= targetHari; hari++) {
+                let modalAwalHari = saldo;
+                let profitSiang = 0, profitSore = 0, profitPetang = 0, profitMalam = 0;
+
+                if (aktif.siang) { profitSiang = saldo * bep; saldo += profitSiang; }
+                if (aktif.sore) { profitSore = saldo * bep; saldo += profitSore; }
+                if (aktif.petang) { profitPetang = saldo * bep; saldo += profitPetang; }
+                if (aktif.malam) { profitMalam = saldo * bep; saldo += profitMalam; }
+
+                let modalAkhir = saldo;
+                let keuntunganHarian = modalAkhir - modalAwalHari;
+                totalProfit += keuntunganHarian;
+
+                const row = `<tr>
+                    <td>${hari}</td>
+                    <td>${modalAwalHari.toFixed(2)}</td>
+                    <td>${profitSiang.toFixed(2)}</td>
+                    <td>${profitSore.toFixed(2)}</td>
+                    <td>${profitPetang.toFixed(2)}</td>
+                    <td>${profitMalam.toFixed(2)}</td>
+                    <td>${modalAkhir.toFixed(2)}</td>
+                    <td>${totalProfit.toFixed(2)}</td>
+                </tr>`;
+
+                tbody.innerHTML += row;
+            }
+        }
+    </script>
+</body>
+</html>
