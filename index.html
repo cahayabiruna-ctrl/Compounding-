@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi Compounding Profesional</title>
+    <style>
+        /* Mengimpor Font dari Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        /* Variabel CSS untuk Tampilan Premium (Dark Slate & Gold) */
+        :root {
+            --bg-color: #0f172a; /* Dark Slate */
+            --container-bg: #ffffff;
+            --primary-text: #0f172a;
+            --secondary-text: #64748b;
+            --primary-accent: #eab308; /* Gold */
+            --primary-accent-hover: #ca8a04; /* Darker Gold */
+            --border-color: #e2e8f0;
+            --table-header-bg: #f8fafc;
+            --table-hover-bg: #fefce8; /* Light Gold/Amber */
+            --shadow-color: rgba(15, 23, 42, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 1rem; /* Padding lebih kecil untuk mobile */
+            color: var(--primary-text);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        @media (min-width: 768px) {
+            body {
+                padding: 3rem;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: var(--container-bg);
+            padding: 1.5rem; /* Padding lebih kecil untuk mobile */
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                padding: 2.5rem;
+            }
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-text);
+            margin-top: 0;
+            margin-bottom: 2.5rem;
+            font-weight: 700;
+            font-size: 1.75rem;
+        }
+        
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        label {
+            font-weight: 500;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            display: block;
+            color: var(--secondary-text);
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: #f8fafc;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-sizing: border-box; 
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.2);
+            background-color: #fff;
+        }
+        
+        .checkbox-container {
+            grid-column: 1 / -1; 
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            color: var(--primary-text);
+        }
+
+        input[type="checkbox"] {
+            appearance: none;
+            width: 1.25em;
+            height: 1.25em;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            display: grid;
+            place-content: center;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        input[type="checkbox"]::before {
+            content: '';
+            width: 0.65em;
+            height: 0.65em;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em var(--primary-accent);
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+        input[type="checkbox"]:checked {
+            background-color: var(--primary-accent);
+            border-color: var(--primary-accent);
+        }
+        input[type="checkbox"]:checked::before {
+            transform: scale(1.2);
+            box-shadow: inset 1em 1em white;
+        }
+        
+        .button-container {
+            grid-column: 1 / -1;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.9rem 1.75rem;
+            background-color: var(--primary-text);
+            color: var(--primary-accent);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        @media (min-width: 768px) {
+            button {
+                width: auto;
+                display: block; 
+                margin: 0 auto;
+            }
+        }
+
+        button:hover {
+            background-color: #000;
+            color: #fff;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            max-height: 550px;
+            margin-top: 2.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-variant-numeric: tabular-nums;
+        }
+
+        td {
+            padding: 1rem 1rem;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        tbody tr {
+             border-bottom: 1px solid var(--border-color);
+             transition: background-color 0.2s ease;
+        }
+        
+        th {
+            background-color: var(--table-header-bg);
+            padding: 0.8rem 1rem;
+            color: var(--secondary-text);
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: sticky;
+            top: 0;
+            text-align: center;
+            /* Z-index untuk baris header */
+            z-index: 10; 
+        }
+        
+        /* === PERBAIKAN TOTAL UNTUK KOLOM STICKY === */
+        
+        /* Sel data kolom pertama (Hari) */
+        td:first-child { 
+            text-align: center; 
+            position: sticky;
+            left: 0;
+            background-color: var(--container-bg);
+            /* Z-index lebih rendah dari header, tapi di atas sel lain */
+            z-index: 5; 
+        }
+        
+        /* Sel header kolom pertama (Judul "Hari") */
+        th:first-child {
+            position: sticky;
+            left: 0;
+            background-color: var(--table-header-bg);
+            /* Z-index TERTINGGI agar selalu di atas segalanya */
+            z-index: 15; 
+        }
+        
+        tr:last-child {
+            border-bottom: none;
+        }
+        
+        tbody tr:hover {
+            background-color: var(--table-hover-bg);
+        }
+        
+        /* Pastikan background kolom pertama ikut berubah warna saat di-hover */
+        tbody tr:hover td:first-child {
+            background-color: var(--table-hover-bg);
+        }
+        
+        .currency-symbol {
+            color: var(--primary-accent);
+            font-weight: 600;
+            margin-right: 2px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Simulasi Compounding Profesional</h1>
+
+        <div class="form-grid">
+            <div>
+                <label for="modal">Modal Awal (USDT)</label>
+                <input type="number" id="modal" value="1157.8" step="0.01">
+            </div>
+            <div>
+                <label for="targetHari">Target Hari</label>
+                <input type="number" id="targetHari" value="33" min="1">
+            </div>
+            <div>
+                <label for="bep">Target Profit per Transaksi (%)</label>
+                <input type="number" id="bep" value="0.85" step="0.01">
+            </div>
+            <div class="checkbox-container">
+                <label>Transaksi yang Aktif</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="siang" checked> Siang</label>
+                    <label><input type="checkbox" id="sinyal4" checked> Sinyal ke-4</label>
+                    <label><input type="checkbox" id="sinyal3"> Sinyal ke-3</label>
+                    <label><input type="checkbox" id="malam" checked> Malam</label>
+                </div>
+            </div>
+            <div class="button-container">
+                <button onclick="hitungCompounding()">Hitung Simulasi</button>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table id="hasilTabel">
+                <thead>
+                    </thead>
+                <tbody>
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrencyWithGoldSymbol(number) {
+            const formatter = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            const parts = formatter.formatToParts(number);
+            let htmlString = '';
+            for (const part of parts) {
+                if (part.type === 'currency') {
+                    htmlString += `<span class="currency-symbol">${part.value}</span>`;
+                } else {
+                    htmlString += part.value;
+                }
+            }
+            return htmlString;
+        }
+
+        function hitungCompounding() {
+            const modalAwal = parseFloat(document.getElementById('modal').value);
+            const targetHari = parseInt(document.getElementById('targetHari').value);
+            const bep = parseFloat(document.getElementById('bep').value) / 100;
+
+            const aktif = {
+                siang: document.getElementById('siang').checked,
+                sinyal4: document.getElementById('sinyal4').checked,
+                sinyal3: document.getElementById('sinyal3').checked,
+                malam: document.getElementById('malam').checked
+            };
+
+            const thead = document.querySelector('#hasilTabel thead');
+            const tbody = document.querySelector('#hasilTabel tbody');
+            thead.innerHTML = '';
+            tbody.innerHTML = '';
+
+            let headerHTML = '<tr><th>Hari</th><th>Modal<br>Awal</th>';
+            if (aktif.siang) headerHTML += '<th>Profit<br>Siang</th>';
+            if (aktif.sinyal4) headerHTML += '<th>Profit<br>Sinyal ke-4</th>';
+            if (aktif.sinyal3) headerHTML += '<th>Profit<br>Sinyal ke-3</th>';
+            if (aktif.malam) headerHTML += '<th>Profit<br>Malam</th>';
+            headerHTML += '<th>Modal<br>Akhir</th><th>Total<br>Profit</th></tr>';
+            
+            thead.innerHTML = headerHTML;
+            
+            let saldo = modalAwal;
+            let totalProfit = 0;
+
+            for (let hari = 1; hari <= targetHari; hari++) {
+                let modalAwalHari = saldo;
+                let profitSiang = 0, profitSinyal4 = 0, profitSinyal3 = 0, profitMalam = 0;
+
+                if (aktif.siang) { profitSiang = saldo * bep; saldo += profitSiang; }
+                if (aktif.sinyal4) { profitSinyal4 = saldo * bep; saldo += profitSinyal4; }
+                if (aktif.sinyal3) { profitSinyal3 = saldo * bep; saldo += profitSinyal3; }
+                if (aktif.malam) { profitMalam = saldo * bep; saldo += profitMalam; }
+
+                let modalAkhir = saldo;
+                let keuntunganHarian = modalAkhir - modalAwalHari;
+                totalProfit += keuntunganHarian;
+
+                let rowHTML = `<tr>
+                    <td>${hari}</td>
+                    <td>${formatCurrencyWithGoldSymbol(modalAwalHari)}</td>`;
+                
+                if (aktif.siang) rowHTML += `<td>${formatCurrencyWithGoldSymbol(profitSiang)}</td>`;
+                if (aktif.sinyal4) rowHTML += `<td>${formatCurrencyWithGoldSymbol(profitSinyal4)}</td>`;
+                if (aktif.sinyal3) rowHTML += `<td>${formatCurrencyWithGoldSymbol(profitSinyal3)}</td>`;
+                if (aktif.malam) rowHTML += `<td>${formatCurrencyWithGoldSymbol(profitMalam)}</td>`;
+
+                rowHTML += `<td>${formatCurrencyWithGoldSymbol(modalAkhir)}</td>
+                    <td>${formatCurrencyWithGoldSymbol(totalProfit)}</td>
+                </tr>`;
+
+                tbody.insertAdjacentHTML('beforeend', rowHTML);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', hitungCompounding);
+    </script>
+</body>
+</html>
