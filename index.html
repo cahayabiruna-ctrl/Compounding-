@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potensi Compound Profesional</title>
+    <style>
+        /* Mengimpor Font dari Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        /* === PALET WARNA & VARIABEL DESAIN BARU === */
+        :root {
+            --bg-dark-gradient: linear-gradient(145deg, #111827, #0c0a09);
+            --surface-color: #1f2937;
+            --primary-accent: #d4af37;
+            --accent-gradient: linear-gradient(45deg, #d4af37, #f0c54a);
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --border-color: #374151;
+            --profit-color: #22c55e;
+            --danger-color: #ef4444;
+            --shadow-color: rgba(0, 0, 0, 0.25);
+            --focus-ring-color: rgba(212, 175, 55, 0.3);
+        }
+
+        /* === GAYA DASAR & LATAR BELAKANG === */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0c0a09;
+            background-image: var(--bg-dark-gradient);
+            margin: 0;
+            padding: 1.5rem;
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+        }
+        
+        @media (min-width: 768px) { body { padding: 3rem; } }
+
+        /* === KONTAINER UTAMA === */
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: var(--surface-color);
+            padding: 2rem;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px var(--shadow-color);
+            border: 1px solid var(--border-color);
+        }
+        
+        @media (min-width: 768px) { .container { padding: 3rem; } }
+
+        /* === TIPOGRAFI & JUDUL === */
+        h1 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+            font-size: clamp(1.8rem, 9.5vw, 2.75rem);
+            line-height: 1.35; 
+            word-break: break-word;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+        
+        .kurs-display {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            transition: color 0.3s ease;
+            line-height: 1.5;
+        }
+
+        /* === FORM & INPUT === */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.75rem;
+        }
+
+        label {
+            font-weight: 500;
+            font-size: 0.875rem;
+            margin-bottom: 0.6rem;
+            display: block;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background-color: #111827;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            color: var(--text-primary);
+            transition: all 0.2s ease-in-out;
+            box-sizing: border-box; 
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 0 4px var(--focus-ring-color);
+            background-color: var(--surface-color);
+        }
+        
+        /* === CHECKBOX KUSTOM === */
+        .checkbox-container { grid-column: 1 / -1; }
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 0.5rem; }
+        .checkbox-group label {
+            display: flex; align-items: center; gap: 0.75rem;
+            font-weight: 500; font-size: 1rem; cursor: pointer;
+            color: var(--text-primary); text-transform: none; letter-spacing: 0;
+        }
+
+        input[type="checkbox"] {
+            appearance: none; width: 1.35em; height: 1.35em;
+            border: 2px solid var(--border-color); border-radius: 6px;
+            display: grid; place-content: center;
+            transition: all 0.2s;
+        }
+        input[type="checkbox"]::before {
+            content: ''; width: 0.75em; height: 0.75em;
+            transform: scale(0); transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em var(--primary-accent);
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+        input[type="checkbox"]:checked {
+            background-color: var(--primary-accent); border-color: var(--primary-accent);
+        }
+        input[type="checkbox"]:checked::before {
+            transform: scale(1.1); box-shadow: inset 1em 1em var(--surface-color);
+        }
+        
+        /* === TOMBOL UTAMA === */
+        .button-container { grid-column: 1 / -1; margin-top: 2rem; }
+        button {
+            width: 100%; padding: 1rem 2rem;
+            background-image: var(--accent-gradient);
+            color: #111827; 
+            border: none; border-radius: 12px;
+            cursor: pointer; font-size: 1rem; font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px -5px rgba(212, 175, 55, 0.4);
+        }
+        @media (min-width: 768px) { button { width: auto; display: block; margin: 0 auto; } }
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px -5px rgba(212, 175, 55, 0.5);
+        }
+        
+        /* === TABEL DATA === */
+        .table-container {
+            overflow: auto; max-height: 550px; margin-top: 3rem;
+            border: 1px solid var(--border-color); border-radius: 16px;
+        }
+        table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+        th {
+            background-color: #111827;
+            padding: 1rem 1.25rem; color: var(--text-secondary);
+            font-weight: 600; font-size: 0.8rem; text-transform: uppercase;
+            letter-spacing: 0.5px; position: sticky; top: 0;
+            text-align: center; z-index: 10; 
+        }
+        td {
+            padding: 1rem 1.25rem; text-align: right;
+            white-space: nowrap; cursor: pointer;
+        }
+        tbody tr {
+             border-bottom: 1px solid var(--border-color);
+             transition: background-color 0.2s ease;
+        }
+        td:first-child { 
+            text-align: center; position: sticky; left: 0;
+            background-color: var(--surface-color); z-index: 5; cursor: default;
+        }
+        th:first-child {
+            position: sticky; left: 0; background-color: #111827; z-index: 15; 
+        }
+        tr:last-child { border-bottom: none; }
+        tbody tr:hover { background-color: rgba(255, 255, 255, 0.03); }
+        tbody tr:hover td, tbody tr:hover td:first-child {
+            background-color: #2a374a;
+        }
+        
+        /* === GAYA TEKS SPESIFIK DALAM TABEL === */
+        .profit-cell { color: var(--profit-color); font-weight: 500; }
+        .gold-symbol { color: var(--primary-accent); font-weight: 500; margin-right: 2px; }
+        
+        /* === MODAL POP-UP === */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(17, 24, 39, 0.8); backdrop-filter: blur(5px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000; opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content {
+            background-color: var(--surface-color); padding: 2.5rem;
+            border-radius: 20px; text-align: center; position: relative;
+            transform: scale(0.9); transition: transform 0.3s ease;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 25px 50px -12px var(--shadow-color);
+        }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        .modal-close {
+            position: absolute; top: 15px; right: 20px;
+            font-size: 2rem; color: var(--text-secondary); cursor: pointer; line-height: 1;
+            transition: color 0.2s ease;
+        }
+        .modal-close:hover { color: var(--text-primary); }
+        #modalUsdValue { margin: 0; font-size: 1.5rem; color: var(--text-secondary); }
+        #modalIdrValue {
+            margin: 0.5rem 0 0 0; font-size: 2.5rem; font-weight: 700;
+            color: var(--text-primary);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Potensi Compound Profesional</h1>
+        <div id="kursDisplay" class="kurs-display">Memuat kurs real-time...</div>
+
+        <div class="form-grid">
+            <div>
+                <label for="modal">Modal Awal (USDT)</label>
+                <input type="number" id="modal" value="100" step="0.01">
+            </div>
+            <div>
+                <label for="targetHari">Target Hari</label>
+                <input type="number" id="targetHari" value="41" min="1">
+            </div>
+            <div>
+                <label for="bep">Target Profit per Transaksi (%)</label>
+                <input type="number" id="bep" value="0.85" step="0.01">
+            </div>
+            <div class="checkbox-container">
+                <label>Transaksi yang Aktif</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="siang" checked> Siang</label>
+                    <label><input type="checkbox" id="sinyal4"> Sinyal ke-4</label>
+                    <label><input type="checkbox" id="sinyal3"> Sinyal ke-3</label>
+                    <label><input type="checkbox" id="malam" checked> Malam</label>
+                </div>
+            </div>
+            <div class="button-container">
+                <button onclick="hitungCompounding()">Hitung Potensi</button>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table id="hasilTabel">
+                <thead></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="konversiModal" class="modal-overlay">
+        <div class="modal-content">
+            <span id="modalClose" class="modal-close">&times;</span>
+            <h3 id="modalUsdValue"></h3>
+            <p id="modalIdrValue"></p>
+        </div>
+    </div>
+
+    <script>
+        let liveKursUsdToIdr = 16300; 
+
+        const idrFormatter = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        });
+
+        async function fetchAndUpdateKurs() {
+            const kursDisplayElement = document.getElementById('kursDisplay');
+            try {
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=tether&vs_currencies=idr');
+                if (!response.ok) throw new Error('Gagal mengambil data kurs dari server CoinGecko.');
+                const data = await response.json();
+                liveKursUsdToIdr = parseFloat(data.tether.idr);
+                const formattedKurs = new Intl.NumberFormat('id-ID').format(liveKursUsdToIdr);
+                kursDisplayElement.innerHTML = `Kurs Global Real-Time:<br>1 USDT = Rp ${formattedKurs}`;
+            } catch (error) {
+                console.error('Error fetching exchange rate from CoinGecko:', error);
+                const formattedFallback = new Intl.NumberFormat('id-ID').format(liveKursUsdToIdr);
+                kursDisplayElement.innerHTML = `Gagal memuat kurs. Menggunakan kurs default: <br>1 USDT = Rp ${formattedFallback}`;
+                kursDisplayElement.style.color = 'var(--danger-color)';
+            }
+        }
+        
+        function formatUsdCurrency(number) {
+            const formatter = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            const parts = formatter.formatToParts(number);
+            let htmlString = '';
+            for (const part of parts) {
+                if (part.type === 'currency') {
+                    htmlString += `<span class="gold-symbol">${part.value}</span>`;
+                } else {
+                    htmlString += part.value;
+                }
+            }
+            return htmlString;
+        }
+
+        function hitungCompounding() {
+            const modalAwal = parseFloat(document.getElementById('modal').value) || 0;
+            const targetHari = parseInt(document.getElementById('targetHari').value) || 1;
+            const bep = parseFloat(document.getElementById('bep').value) / 100 || 0;
+            const aktif = {
+                siang: document.getElementById('siang').checked,
+                sinyal4: document.getElementById('sinyal4').checked,
+                sinyal3: document.getElementById('sinyal3').checked,
+                malam: document.getElementById('malam').checked
+            };
+            const thead = document.querySelector('#hasilTabel thead');
+            const tbody = document.querySelector('#hasilTabel tbody');
+            thead.innerHTML = '';
+            tbody.innerHTML = '';
+
+            let headerHTML = '<tr><th>Hari</th><th>Modal Awal</th>';
+            if (aktif.siang) headerHTML += '<th>Profit Siang</th>';
+            if (aktif.sinyal4) headerHTML += '<th>Profit Sinyal-4</th>';
+            if (aktif.sinyal3) headerHTML += '<th>Profit Sinyal-3</th>';
+            if (aktif.malam) headerHTML += '<th>Profit Malam</th>';
+            headerHTML += '<th>Modal Akhir</th><th>Total Profit</th></tr>';
+            thead.innerHTML = headerHTML;
+            
+            let saldo = modalAwal;
+            let totalProfit = 0;
+
+            for (let hari = 1; hari <= targetHari; hari++) {
+                let modalAwalHari = saldo;
+                let profitSiang = 0, profitSinyal4 = 0, profitSinyal3 = 0, profitMalam = 0;
+
+                if (aktif.siang) { profitSiang = saldo * bep; saldo += profitSiang; }
+                if (aktif.sinyal4) { profitSinyal4 = saldo * bep; saldo += profitSinyal4; }
+                if (aktif.sinyal3) { profitSinyal3 = saldo * bep; saldo += profitSinyal3; }
+                if (aktif.malam) { profitMalam = saldo * bep; saldo += profitMalam; }
+
+                let modalAkhir = saldo;
+                let keuntunganHarian = modalAkhir - modalAwalHari;
+                totalProfit += keuntunganHarian;
+                
+                let rowHTML = `<tr>
+                    <td>${hari}</td>
+                    <td data-usd-value="${modalAwalHari.toFixed(2)}">${formatUsdCurrency(modalAwalHari)}</td>`;
+                
+                if (aktif.siang) rowHTML += `<td class="profit-cell" data-usd-value="${profitSiang.toFixed(2)}">${formatUsdCurrency(profitSiang)}</td>`;
+                if (aktif.sinyal4) rowHTML += `<td class="profit-cell" data-usd-value="${profitSinyal4.toFixed(2)}">${formatUsdCurrency(profitSinyal4)}</td>`;
+                if (aktif.sinyal3) rowHTML += `<td class="profit-cell" data-usd-value="${profitSinyal3.toFixed(2)}">${formatUsdCurrency(profitSinyal3)}</td>`;
+                if (aktif.malam) rowHTML += `<td class="profit-cell" data-usd-value="${profitMalam.toFixed(2)}">${formatUsdCurrency(profitMalam)}</td>`;
+
+                rowHTML += `<td data-usd-value="${modalAkhir.toFixed(2)}">${formatUsdCurrency(modalAkhir)}</td>
+                    <td class="profit-cell" data-usd-value="${totalProfit.toFixed(2)}">${formatUsdCurrency(totalProfit)}</td>
+                </tr>`;
+                tbody.insertAdjacentHTML('beforeend', rowHTML);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchAndUpdateKurs().then(() => {
+                hitungCompounding();
+            });
+
+            const modalOverlay = document.getElementById('konversiModal');
+            const modalUsdValue = document.getElementById('modalUsdValue');
+            const modalIdrValue = document.getElementById('modalIdrValue');
+            const modalClose = document.getElementById('modalClose');
+            const tableBody = document.querySelector('#hasilTabel tbody');
+
+            const showModal = (usdValue) => {
+                const idrValue = usdValue * liveKursUsdToIdr;
+                modalUsdValue.innerHTML = formatUsdCurrency(usdValue);
+                modalIdrValue.textContent = idrFormatter.format(idrValue);
+                modalOverlay.classList.add('active');
+            };
+            const hideModal = () => modalOverlay.classList.remove('active');
+
+            tableBody.addEventListener('click', (event) => {
+                const cell = event.target.closest('td');
+                if (cell && cell.hasAttribute('data-usd-value') && !event.target.classList.contains('gold-symbol')) {
+                    const usdValue = parseFloat(cell.getAttribute('data-usd-value'));
+                    showModal(usdValue);
+                }
+            });
+
+            modalClose.addEventListener('click', hideModal);
+            modalOverlay.addEventListener('click', (event) => {
+                if (event.target === modalOverlay) hideModal();
+            });
+        });
+    </script>
+</body>
+</html>
